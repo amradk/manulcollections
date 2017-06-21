@@ -1,0 +1,3 @@
+graft mylibrary/templates
+graft mylibrary/static
+include mylibrary/mylibrary.sql
