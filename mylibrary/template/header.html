@@ -23,41 +23,25 @@
       </div>
       -->
 
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link" id="home-tab" data-toggle="tab" href="/" role="tab" aria-controls="home" aria-selected="true">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Books</a>
+            <a class="nav-link" id="books-tab" data-toggle="tab" href="/books" role="tab" aria-controls="books" aria-selected="false">Books</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">CPU</a>
+            <a class="nav-link" id="cpu-tab" data-toggle="tab" href="/cpu" role="tab" aria-controls="cpu" aria-selected="false">CPU</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Consoles</a>
+            <a class="nav-link" id="consoles-tab" data-toggle="tab" href="/consoles" role="tab" aria-controls="consoles" aria-selected="false">Consoles</a>
           </li>
         </ul>
         <form class="form-inline mt-2 mt-md-0">
           <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-      </div>
+
   </nav>
 
-  <!-- grid with result -->
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-4 border border-top-0 border-botom-0 border-right-0 border-primary">
-        Название
-      </div>
-      <div class="col-sm-4 border border-top-0 border-botom-0 border-right-0 border-primary">Автор</div>
-      <div class="col-sm-1 border border-top-0 border-botom-0 border-right-0 border-primary">Год изд.</div>
-      <div class="col-sm-3 border border-top-0 border-botom-0 border-primary">Издатель</div>
-    </div>
-  </div>
-
-</div>
-</body>
-
-</html>
