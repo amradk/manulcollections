@@ -19,6 +19,7 @@ def index_path():
 
 @app.route('/books')
 def books_path():
+        books = db.collection.find({"bname":1, "byear":1, "pname":1})
         return render_template('books.html')
 
 @app.route('/add_book', methods=['GET', 'POST'])

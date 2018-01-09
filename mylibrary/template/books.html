@@ -25,6 +25,26 @@
                 <a class="btn btn-default" role="button" href="/add_book">Add</a>
               </div>
             </div>
+            <div class="row table-responsive">
+              <table class="table table-bordered">
+                <tr>
+                  <td>№</td>
+                  <td>Название</td>
+                  <td>Год</td>
+                  <td>Издатель</td>
+                </tr>
+                {% for book in books %}
+                <tr>
+                  <td></td>
+                  <td>{{ book['bname']}}</td>
+                  <td>book['byear']</td>
+                  <td>book['pname']</td>
+                </tr>
+                {% endfor %}
+
+              </table>
+            </div>
+
           </div>
 
       </div>
