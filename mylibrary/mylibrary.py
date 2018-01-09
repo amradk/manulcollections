@@ -11,7 +11,8 @@ app = Flask(__name__, template_folder='template') # create the application insta
 app.config['SECRET_KEY']='HNdou238cxa03bHGAr'
 
 mng_conn = pymongo.MongoClient(host=settings.db['host'], port=settings.db['port'])
-db = mng_conn.client[settings.db['database']]
+db = mng_conn[settings.db['database']]
+coll = db['books']
 
 @app.route('/')
 def index_path():
@@ -19,8 +20,10 @@ def index_path():
 
 @app.route('/books')
 def books_path():
-        books = db.collection.find({"bname":1, "byear":1, "pname":1})
-        return render_template('books.html')
+        books = list(coll.find({},{"bname":1, "byear":1, "pname":1}))
+        for book in books:
+            print(book)
+        return render_template('books.html',list=books)
 
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_books_path():
@@ -42,6 +45,6 @@ def add_books_path():
             book['compositions'].append({'aname':f[cur_cmp + '.aname'], \
                 'cname':f[cur_cmp + '.cname'], 'ctranslator':f[cur_cmp + '.ctranslator'], \
                  'cgenre':f[cur_cmp + '.cgenre']})
-        db.insert_one(book)
+        coll.insert_one(book)
 
     return render_template('add_book.html')

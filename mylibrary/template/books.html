@@ -33,12 +33,12 @@
                   <td>Год</td>
                   <td>Издатель</td>
                 </tr>
-                {% for book in books %}
+                {% for book in list %}
                 <tr>
                   <td></td>
-                  <td>{{ book['bname']}}</td>
-                  <td>book['byear']</td>
-                  <td>book['pname']</td>
+                  <td>{{book.bname}}</td>
+                  <td>{{book['byear']}}</td>
+                  <td>book.pname</td>
                 </tr>
                 {% endfor %}
 
