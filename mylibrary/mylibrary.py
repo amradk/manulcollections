@@ -3,6 +3,7 @@ import sys
 sys.path.insert(0, os.path.abspath('./'))
 import settings
 import pymongo
+from bson.objectid import ObjectId
 
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
@@ -21,8 +22,8 @@ def index_path():
 @app.route('/books')
 def books_path():
         books = list(coll.find({},{"bname":1, "byear":1, "pname":1}))
-        for book in books:
-            print(book)
+        #for book in books:
+            #print(book)
         return render_template('books.html',list=books)
 
 @app.route('/add_book', methods=['GET', 'POST'])
@@ -48,3 +49,10 @@ def add_books_path():
         coll.insert_one(book)
 
     return render_template('add_book.html')
+
+@app.route('/book_info', methods=['GET', 'POST'])
+def book_info_path():
+    book_id = request.args.get('book_id')
+    book = coll.find_one({'_id':ObjectId(book_id)})
+    print(book)
+    return render_template('book_info.html',book=book)
