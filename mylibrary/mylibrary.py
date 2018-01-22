@@ -54,5 +54,31 @@ def add_books_path():
 def book_info_path():
     book_id = request.args.get('book_id')
     book = coll.find_one({'_id':ObjectId(book_id)})
-    print(book)
+
     return render_template('book_info.html',book=book)
+
+@app.route('/book_edit', methods=['GET', 'POST'])
+def book_edit_path():
+    book_id = request.args.get('book_id')
+    book = coll.find_one({'_id':ObjectId(book_id)})
+
+    if request.method == 'POST':
+        book = {}
+        book['bname'] = request.form.get('bname')
+        book['bisbn'] = request.form.get('bisbn')
+        book['byear'] = request.form.get('byear')
+        book['beditor'] = request.form.get('beditor')
+        book['pname'] = request.form.get('pname')
+        book['purl'] = request.form.get('purl')
+        book['pcity'] = request.form.get('pcity')
+        book['compositions'] = []
+        f = request.form
+        num_of_cmp = int((len(f) - 7)/4)
+        for i in range(num_of_cmp):
+            cur_cmp = 'cmp[' + str(i) + ']'
+            book['compositions'].append({'aname':f[cur_cmp + '.aname'], \
+                'cname':f[cur_cmp + '.cname'], 'ctranslator':f[cur_cmp + '.ctranslator'], \
+                 'cgenre':f[cur_cmp + '.cgenre']})
+        coll.update_one({'_id':ObjectId(book_id)},{'$set':book})
+
+    return render_template('book_edit.html',book=book)
