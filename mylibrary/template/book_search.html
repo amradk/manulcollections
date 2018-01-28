@@ -40,14 +40,14 @@ function setDelModal() {
                   <div class="form-row">
                     <fieldset>
                       <div class="form-group">
-                        <select class="form-control" name="search_type">
-                          <option value="bname">Название</option>
+                        <select class="form-control" id="search_type">
+                          <option valee="bname">Название </option>
                           <option value="aname">Автор</option>
                           <option value="bgenre">Жанр</option>
                         </select>
                       </div>
                       <div class="form-group">
-                        <input class="form-control" type="text" name="search_expr" placeholder="Search" aria-label="Search">
+                        <input class="form-control" type="text" placeholder="Search" aria-label="Search">
                       </div>
                       <div class="form-group">
                         <button class="btn btn-default form-control" type="submit">Search</button>
@@ -67,7 +67,7 @@ function setDelModal() {
                   <td>Ред.</td>
                   <td>Удалить</td>
                 </tr>
-                {% for book in list %}
+                {% for book in result %}
                 <tr>
                   <td>{{loop.index}}</td>
                   <td><a href="/book_info?book_id={{book._id}}">{{book.bname}}</a></td>

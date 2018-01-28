@@ -14,6 +14,9 @@ app.config['SECRET_KEY']='HNdou238cxa03bHGAr'
 mng_conn = pymongo.MongoClient(host=settings.db['host'], port=settings.db['port'])
 db = mng_conn[settings.db['database']]
 coll = db['books']
+#ДК, дополнительные коллекции используемые для автодополнения
+pub_coll=db['publishers']
+authors_coll=db['authors']
 
 @app.route('/')
 def index_path():
@@ -82,3 +85,21 @@ def book_edit_path():
         coll.update_one({'_id':ObjectId(book_id)},{'$set':book})
 
     return render_template('book_edit.html',book=book)
+
+#ДК, нужно добавить информацию об успешном уделении
+@app.route('/book_del', methods=['GET','POST'])
+def book_del_path():
+    book_id = request.args.get('book_id')
+    coll.delete_one({'_id':ObjectId(book_id)})
+
+    return redirect("/books")
+
+@app.route('/book_search', methods=['GET'])
+def book_search_path():
+    search_type = request.args.get('search_type')
+    search_expr = request.args.get('search_expr')
+    result = coll.find({search_type:search_expr})
+    for doc in result:
+        print(doc)
+
+    return render_template('book_search.html',result=result,type=search_type)
