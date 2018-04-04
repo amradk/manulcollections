@@ -3,6 +3,7 @@ import sys
 sys.path.insert(0, os.path.abspath('./'))
 import settings
 import pymongo
+import re
 from bson.objectid import ObjectId
 
 from flask import Flask, request, session, g, redirect, url_for, abort, \
@@ -14,9 +15,6 @@ app.config['SECRET_KEY']='HNdou238cxa03bHGAr'
 mng_conn = pymongo.MongoClient(host=settings.db['host'], port=settings.db['port'])
 db = mng_conn[settings.db['database']]
 coll = db['books']
-#ДК, дополнительные коллекции используемые для автодополнения
-pub_coll=db['publishers']
-authors_coll=db['authors']
 
 @app.route('/')
 def index_path():
@@ -97,9 +95,8 @@ def book_del_path():
 @app.route('/book_search', methods=['GET'])
 def book_search_path():
     search_type = request.args.get('search_type')
-    search_expr = request.args.get('search_expr')
-    result = coll.find({search_type:search_expr})
-    for doc in result:
-        print(doc)
+    regx = '^' + request.args.get('search_expr')+'*'
+    search_expr = re.compile(regx)
+    result = list(coll.find({search_type:search_expr},{"bname":1, "byear":1, "pname":1}))
 
     return render_template('book_search.html',result=result,type=search_type)

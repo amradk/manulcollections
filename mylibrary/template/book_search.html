@@ -1,18 +1,6 @@
 
 {% include "header.html" %}
 
-<script type="text/javascript">
-function setDelModal() {
-  $(document).ready(function() {
-    var book_id = $("#del_btn").attr("book-id");
-    var book_name = $("#del_btn").attr("book-name");
-    var str = "Вы уверены что хотите удалить книгу: " + book_name + " ?";
-    $("#modal_confirm").text(str);
-    $("#modal_del_btn_yes").attr("href", ("/book_dell?book_id=" + book_id));
-  });
-};
-</script>
-
 <div class="container">
 
       <div class="row">
@@ -86,25 +74,6 @@ function setDelModal() {
               </table>
             </div>
 
-          </div>
-
-          <!-- Modal -->
-          <div class="modal fade" id="DelConfirmation" tabindex="-1" role="dialog" aria-labelledby="DelConfirmLabel">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title" id="DelConfirmLabel">Подтверждение удаления</h4>
-                </div>
-                <div class="modal-body" id="modal_confirm">
-                  Вы уверены что хотите удалить книгу: ?
-                </div>
-                <div class="modal-footer">
-                  <a id="modal_del_btn_yes" class="btn btn-default" role="button">Да</a>
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
-                </div>
-              </div>
-            </div>
           </div>
 
 
