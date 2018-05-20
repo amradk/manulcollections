@@ -1,6 +1,7 @@
 
 {% include "header.html" %}
 
+
 <div class="container">
 
       <div class="row">
@@ -24,18 +25,18 @@
                 <a class="btn btn-default" role="button" href="/add_book">Добавить книгу</a>
               </div>
               <div class="col-lg-6">
-                <form class="form-inline" action="/book_search">
+                <form class="form-inline" method="GET" action="/book_search">
                   <div class="form-row">
                     <fieldset>
                       <div class="form-group">
-                        <select class="form-control" id="search_type">
-                          <option valee="bname">Название </option>
+                        <select class="form-control" name="search_type">
+                          <option value="bname">Название</option>
                           <option value="aname">Автор</option>
                           <option value="bgenre">Жанр</option>
                         </select>
                       </div>
                       <div class="form-group">
-                        <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                        <input class="form-control" type="text" name="search_expr" placeholder="Search" aria-label="Search">
                       </div>
                       <div class="form-group">
                         <button class="btn btn-default form-control" type="submit">Search</button>
@@ -49,24 +50,17 @@
               <table class="table table-bordered">
                 <tr>
                   <td>№</td>
-                  <td>Название</td>
-                  <td>Год</td>
-                  <td>Издатель</td>
+                  <td>Фамилия</td>
+                  <td>Имя</td>
                   <td>Ред.</td>
-                  <td>Удалить</td>
                 </tr>
-                {% for book in result %}
+                {% for author in list %}
                 <tr>
                   <td>{{loop.index}}</td>
-                  <td><a href="/book_info?book_id={{book.id}}">{{book.name}}</a></td>
-                  <td>{{book.year}}</td>
-                  <td>{{book.publisher[0].name}}</td>
+                  <td><a href="/author_info?author_id={{author.id}}">{{author.surname}}</a></td>
+                  <td>{{author.name}}</td>
                   <td>
-                    <a class="btn btn-default glyphicon glyphicon-edit" role="button" href="/book_edit?book_id={{book.id}}"></a>
-                  </td>
-                  <td>
-                    <a class="btn btn-default glyphicon glyphicon-trash" id="del_btn" role="button" data-toggle="modal" book-id="{{book.id}}" book-name="{{book.name}}" onclick="setDelModal()" href="#DelConfirmation"></a>
-                    <!-- href="/book_del?book_id={{book._id}}" -->
+                    <a class="btn btn-default glyphicon glyphicon-edit" role="button" href="/author_edit?author_id={{author.id}}"></a>
                   </td>
                 </tr>
                 {% endfor %}
@@ -74,6 +68,25 @@
               </table>
             </div>
 
+          </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="DelConfirmation" tabindex="-1" role="dialog" aria-labelledby="DelConfirmLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="DelConfirmLabel">Подтверждение удаления</h4>
+                </div>
+                <div class="modal-body" id="modal_confirm">
+                  Вы уверены что хотите удалить книгу: ?
+                </div>
+                <div class="modal-footer">
+                  <a id="modal_del_btn_yes" class="btn btn-default" role="button">Да</a>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+                </div>
+              </div>
+            </div>
           </div>
 
 

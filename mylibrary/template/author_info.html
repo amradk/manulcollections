@@ -26,15 +26,8 @@
               </div>
 
               <div class="col-lg-5">
-                <p>Название: {{book.name}}</p>
-                <p>ISBN: {{book.isbn}}</p>
-                <p>Год издания: {{book.year}}</p>
-                <p>Редактор: {{book.editor[0].surname}} {{book.editor[0].name}}</p>
-                <p>Издатель: {{book.publisher[0].name}}</p>
-                <ul>
-                  <li>Город: {{book.publisher[0].city}}</li>
-                  <li>Сайт: {{book.publisher[0].url}}</li>
-                </ul>
+                <p>Фамилия: {{author.surname}}</p>
+                <p>Имя: {{author.name}}</p>
               </div>
             </div>
 
@@ -47,15 +40,12 @@
                   <td>Автор</td>
                   <td>Жанр</td>
                 </tr>
-                {% for cmp in book.composition %}
+                <!-- {# for cmp in book.composition #}
                 <tr>
-                  <td></td>
-                  <td>{{cmp.name}}</td>
-                  <td>{{cmp.author[0].surname}} {{cmp.author[0].name}}</td>
-                  <td>{{cmp.translator[0].surname}} {{cmp.translator[0].name}}</td>
-                  <td>{{cmp.genre[0].name}}</td>
+
                 </tr>
-                {% endfor %}
+                {# endfor #}
+                -->
               </table>
             </div>
           </div>

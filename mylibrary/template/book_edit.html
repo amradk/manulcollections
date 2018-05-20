@@ -111,76 +111,83 @@ $(document).ready(function() {
                     <div class="form-group">
                       <label class="col-lg-2 control-label" for="bname">Название книги</label>
                       <div class="col-lg-6">
-                        <input type="text" value="{{book.bname}}" id="bname" name="bname" class="form-control" autocomplete="off">
+                        <input type="text" value="{{book.name}}" id="bname" name="bname" class="form-control" autocomplete="off">
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-2 control-label" for="bisbn">ISBN книги</label>
                       <div class="col-lg-6">
-                        <input type="text" value="{{book.bisbn}}" id="bisbn" name="bisbn" class="form-control" autocomplete="off">
+                        <input type="text" value="{{book.isbn}}" id="bisbn" name="bisbn" class="form-control" autocomplete="off">
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-2 control-label" for="byear">Год издания</label>
                       <div class="col-lg-6">
-                        <input type="text" value="{{book.byear}}" id="byear" name="byear" class="form-control" autocomplete="off">
+                        <input type="text" value="{{book.year}}" id="byear" name="byear" class="form-control" autocomplete="off">
                       </div>
                     </div>
                     <div class="form-group">
                       <label class="col-lg-2 control-label" for="beditor">Редактор</label>
                       <div class="col-lg-6">
-                        <input type="text" value="{{book.beditor}}" id="beditor" name="beditor" class="form-control" autocomplete="off">
+                        <input type="text" value="{{book.editor[0].surname}} {{book.editor[0].name}}" id="beditor" name="beditor" class="form-control" autocomplete="off">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-lg-2 control-label" for="bnote">Аннотация</label>
+                      <div class="col-lg-6">
+                        <input type="text" value="{{book.note}}" id="bnote" name="bnote" class="form-control" autocomplete="off">
                       </div>
                     </div>
 
                     <div class="form-group">
                       <label class="col-lg-2 control-label" for="pname">Издатель </label>
                       <div class="col-lg-6">
-                        <input type="text" value="{{book.pname}}" id="pname" name="pname" class="form-control" autocomplete="off">
+                        <input type="text" value="{{book.publisher[0].name}}" id="pname" name="pname" class="form-control" autocomplete="off">
                       </div>
                     </div>
 
                     <div class="form-group">
                       <label class="col-lg-2 control-label" for="purl">Сайт </label>
                       <div class="col-lg-6">
-                        <input type="text" value="{{book.purl}}" id="purl" name="purl" class="form-control" autocomplete="off">
+                        <input type="text" value="{{book.publisher[0].url}}" id="purl" name="purl" class="form-control" autocomplete="off">
                       </div>
                     </div>
 
                     <div class="form-group">
                       <label class="col-lg-2 control-label" for="pcity">Город </label>
                       <div class="col-lg-6">
-                        <input type="text" value="{{book.pcity}}" id="pcity" name="pcity" class="form-control" autocomplete="off">
+                        <input type="text" value="{{book.publisher[0].city}}" id="pcity" name="pcity" class="form-control" autocomplete="off">
                       </div>
                     </div>
 
-                    {% for cmp in book.compositions %}
+                    {% for cmp in book.composition %}
                     <div class="well">
                       <div class="form-group">
                         <label class="col-lg-2 control-label" for="aname">Автор Ф.И.О </label>
                         <div class="col-lg-6">
-                          <input type="text" value="{{cmp.aname}}" name="cmp[{{loop.index0}}].aname" class="form-control" autocomplete="off">
+                          <input type="text" value="{{cmp.author[0].surname}} {{cmp.author[0].name}}" name="cmp[{{loop.index0}}].aname" class="form-control" autocomplete="off">
                         </div>
                       </div>
 
                       <div class="form-group">
                         <label class="col-lg-2 control-label" for="composition">Произведение </label>
                         <div class="col-lg-6">
-                          <input type="text" value="{{cmp.cname}}" name="cmp[{{loop.index0}}].cname" class="form-control" autocomplete="off">
+                          <input type="text" value="{{cmp.name}}" name="cmp[{{loop.index0}}].cname" class="form-control" autocomplete="off">
                         </div>
                       </div>
 
                       <div class="form-group">
                         <label class="col-lg-2 control-label" for="ctranslator">Переводчик </label>
                         <div class="col-lg-6">
-                          <input type="text" value="{{cmp.ctranslator}}" name="cmp[{{loop.index0}}].ctranslator" class="form-control" autocomplete="off">
+                          <input type="text" value="{{cmp.translator[0].surname}} {{cmp.translator[0].name}}" name="cmp[{{loop.index0}}].ctranslator" class="form-control" autocomplete="off">
                         </div>
                       </div>
 
                       <div class="form-group">
                         <label class="col-lg-2 control-label" for="cgenre">Жанр </label>
                         <div class="col-lg-6">
-                          <input type="text" value="{{cmp.cgenre}}" name="cmp[{{loop.index0}}].cgenre" class="form-control" autocomplete="off">
+                          <input type="text" value="{{cmp.genre[0].name}}" name="cmp[{{loop.index0}}].cgenre" class="form-control" autocomplete="off">
                         </div>
                       </div>
                     </div>

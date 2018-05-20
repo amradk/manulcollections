@@ -70,14 +70,14 @@ function setDelModal() {
                 {% for book in list %}
                 <tr>
                   <td>{{loop.index}}</td>
-                  <td><a href="/book_info?book_id={{book._id}}">{{book.bname}}</a></td>
-                  <td>{{book.byear}}</td>
-                  <td>{{book.pname}}</td>
+                  <td><a href="/book_info?book_id={{book.id}}">{{book.name}}</a></td>
+                  <td>{{book.year}}</td>
+                  <td>{{book.publisher}}</td>
                   <td>
-                    <a class="btn btn-default glyphicon glyphicon-edit" role="button" href="/book_edit?book_id={{book._id}}"></a>
+                    <a class="btn btn-default glyphicon glyphicon-edit" role="button" href="/book_edit?book_id={{book.id}}"></a>
                   </td>
                   <td>
-                    <a class="btn btn-default glyphicon glyphicon-trash" id="del_btn" role="button" data-toggle="modal" book-id="{{book._id}}" book-name="{{book.bname}}" onclick="setDelModal()" href="#DelConfirmation"></a>
+                    <a class="btn btn-default glyphicon glyphicon-trash" id="del_btn" role="button" data-toggle="modal" book-id="{{book.id}}" book-name="{{book.name}}" onclick="setDelModal()" href="#DelConfirmation"></a>
                     <!-- href="/book_del?book_id={{book._id}}" -->
                   </td>
                 </tr>

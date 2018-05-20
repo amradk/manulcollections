@@ -2,9 +2,9 @@
 
 db = {
         'host':'localhost',
-        'port':27017,
+        'port':3306,
         'database':'bookshelf',
-        'collection':'books',
-        'username':'',
-        'password':''
+        'username':'root',
+        'password':'password',
+        'charset':'utf8',
 }
