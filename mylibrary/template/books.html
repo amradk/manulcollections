@@ -33,10 +33,10 @@ function setDelModal() {
           <div class="col-lg-10">
             <div class="row well">
               <div class="col-lg-4">
-                <a class="btn btn-default" role="button" href="/add_book">Добавить книгу</a>
+                <a class="btn btn-default" role="button" href="/book/add">Добавить книгу</a>
               </div>
               <div class="col-lg-6">
-                <form class="form-inline" method="GET" action="/book_search">
+                <form class="form-inline" method="GET" action="/book/search">
                   <div class="form-row">
                     <fieldset>
                       <div class="form-group">
@@ -70,11 +70,11 @@ function setDelModal() {
                 {% for book in list %}
                 <tr>
                   <td>{{loop.index}}</td>
-                  <td><a href="/book_info?book_id={{book.id}}">{{book.name}}</a></td>
+                  <td><a href="/book/info?book_id={{book.id}}">{{book.name}}</a></td>
                   <td>{{book.year}}</td>
-                  <td>{{book.publisher}}</td>
+                  <td>{{book.publisher[0].name}}</td>
                   <td>
-                    <a class="btn btn-default glyphicon glyphicon-edit" role="button" href="/book_edit?book_id={{book.id}}"></a>
+                    <a class="btn btn-default glyphicon glyphicon-edit" role="button" href="/book/edit?book_id={{book.id}}"></a>
                   </td>
                   <td>
                     <a class="btn btn-default glyphicon glyphicon-trash" id="del_btn" role="button" data-toggle="modal" book-id="{{book.id}}" book-name="{{book.name}}" onclick="setDelModal()" href="#DelConfirmation"></a>

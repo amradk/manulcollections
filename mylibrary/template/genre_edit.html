@@ -1,0 +1,142 @@
+
+{% include "header.html" %}
+
+<!-- script to switch beeteen steps -->
+<script type="text/javascript">
+$(document).ready(function() {
+  var v = $("#bookinputform");
+  console.log( "ready!" );
+  console.log(  );
+  // Binding next button on first step
+  $(".open1").click(function() {
+
+        $(".frm").hide("fast");
+        $("#sf2").show("slow");
+
+   });
+
+   // Binding next button on second step
+   $(".open2").click(function() {
+
+        $(".frm").hide("fast");
+        $("#sf3").show("slow");
+
+    });
+
+     // Binding back button on second step
+    $(".back2").click(function() {
+      $(".frm").hide("fast");
+      $("#sf1").show("slow");
+    });
+
+     // Binding back button on third step
+     $(".back3").click(function() {
+      $(".frm").hide("fast");
+      $("#sf2").show("slow");
+    });
+
+    $(".open3").click(function() {
+
+        // optional
+        // used delay form submission for a seccond and show a loader image
+        $("#loader").show();
+         setTimeout(function(){
+           $("#basicform").html('<h2>Thanks for your time.</h2>');
+         }, 1000);
+        // Remove this if you are not using ajax method for submitting values
+        return false;
+
+    });
+});
+</script>
+
+<!-- script to add more input fields -->
+<script>
+$(document).ready(function() {
+
+    var  bookIndex = 0;
+
+    $('#bookform')
+        // Add button click handler
+        .on('click', '.addButton', function() {
+            bookIndex++;
+            var $template = $('#compositionTemplate'),
+                $clone    = $template
+                                .clone()
+                                .removeClass('hide')
+                                .removeAttr('id')
+                                .attr('data-book-index', bookIndex)
+                                .insertBefore($template);
+
+            // Update the name attributes
+            $clone
+                .find('[name="aname"]').removeAttr('disabled').attr('name', 'cmp[' + bookIndex + '].aname').end()
+                .find('[name="cname"]').removeAttr('disabled').attr('name', 'cmp[' + bookIndex + '].cname').end()
+                .find('[name="ctranslator"]').removeAttr('disabled').attr('name', 'cmp[' + bookIndex + '].ctranslator').end()
+                .find('[name="cgenre"]').removeAttr('disabled').attr('name', 'cmp[' + bookIndex + '].cgenre').end();
+        })
+
+        // Remove button click handler
+        .on('click', '.removeButton', function() {
+            var $row  = $(this).parents('.dynform');
+            // Remove element containing the fields
+            $row.remove();
+        });
+});
+</script>
+
+<div class="container">
+
+      <div class="row">
+        <!-- Меню -->
+        <div class="col-lg-2 border" >
+            <ul class="list-group">
+              <li class="list-group-item">Категории</li>
+                <ul class="list-group">
+                  <li class="list-group-item"><a href="#">Худ. лит-ра</a></li>
+                  <li class="list-group-item"><a href="#">Тех. лит-ра</a></li>
+                  <li class="list-group-item"><a href="#">Детская</a></li>
+                  <li class="list-group-item"><a href="#">Учебники</a></li>
+                </ul>
+              </ul>
+          </div>
+
+          <!-- Результат -->
+          <div class="col-lg-10">
+            <div class="row">
+              <form  class="form-horizontal" id="bookform" method="POST" >
+                <div id="sf1" class="frm">
+                  <fieldset>
+                    <legend>Изменить данные о жанре</legend>
+
+                    <div class="form-group">
+                      <label class="col-lg-2 control-label" for="gname">Название</label>
+                      <div class="col-lg-6">
+                        <input type="text" value="{{genre.name}}" id="gname" name="gname" class="form-control" autocomplete="off">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-lg-2 control-label" for="gnote">Доп. информация</label>
+                      <div class="col-lg-6">
+                        <textarea rows="8" value="{{genre.desc}}" id="gnote" name="gnote" class="form-control" autocomplete="off"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="col-lg-10 col-lg-offset-2">
+                        <button type="submit" class="btn btn-default">Submit</button>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </form>
+            </div>
+          </div>
+
+      </div>
+
+
+</div>
+
+{% include "footer.html" %}

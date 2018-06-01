@@ -37,15 +37,18 @@
                 <tr>
                   <td>№</td>
                   <td>Название</td>
-                  <td>Автор</td>
+                  <td>Произведения</td>>
                   <td>Жанр</td>
                 </tr>
-                <!-- {# for cmp in book.composition #}
+                {% for book in books %}
                 <tr>
-
+                    <td>{{loop.index}}
+                    <td><a href="/book/info?book_id={{book.id}}">{{book.name}}</a></td>
+                    <td>{% for cmp in book.composition %}{{cmp.name}}, {% endfor %}</td>
+                    <td></td>
                 </tr>
-                {# endfor #}
-                -->
+                {% endfor %}
+
               </table>
             </div>
           </div>

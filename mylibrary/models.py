@@ -1,7 +1,7 @@
 #from flask import Flask
-#from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
-from mylibrary import db
+from . import db
 
 rel_cmp_translator = db.Table('rel_cmp_translator',
     db.Column('composition_id', db.Integer, db.ForeignKey('composition.id'), primary_key = True),
@@ -106,6 +106,7 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80, collation='utf8_general_ci'), unique=False, nullable=False)
     surname = db.Column(db.String(120, collation='utf8_general_ci'), unique=False, nullable=False)
+    note = db.Column(db.Text(collation='utf8_general_ci'), unique=False, nullable=True)
 
     def __init__(self, name, surname):
         self.name = name
@@ -118,7 +119,7 @@ class Book(db.Model):
     orig_name = db.Column(db.String(80, collation='utf8_general_ci'), unique=False, nullable=True)
     year = db.Column(db.String(80, collation='utf8_general_ci'), unique=False, nullable=False)
     note = db.Column(db.Text(collation='utf8_general_ci'), unique=False, nullable=True)
-    volume = db.Comlumn(db.Integer, default=0)
+    volume = db.Column(db.Integer, default=0)
     editor = db.relationship('Editor', secondary=rel_book_editor, lazy='subquery',
                                  backref="editor")
     publisher = db.relationship('Publisher', secondary=rel_book_publisher, lazy='subquery',

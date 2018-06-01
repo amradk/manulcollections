@@ -26,15 +26,7 @@
               </div>
 
               <div class="col-lg-5">
-                <p>Название: {{book.name}}</p>
-                <p>ISBN: {{book.isbn}}</p>
-                <p>Год издания: {{book.year}}</p>
-                <p>Редактор: {{book.editor[0].surname}} {{book.editor[0].name}}</p>
-                <p>Издатель: {{book.publisher[0].name}}</p>
-                <ul>
-                  <li>Город: {{book.publisher[0].city}}</li>
-                  <li>Сайт: {{book.publisher[0].url}}</li>
-                </ul>
+                <p>Название: {{genre.name}}</p>
               </div>
             </div>
 
@@ -44,19 +36,15 @@
                 <tr>
                   <td>№</td>
                   <td>Название</td>
-                  <td>Автор</td>
-                  <td>Переводчик</td>
-                  <td>Жанр</td>
                 </tr>
-                {% for cmp in book.composition %}
+                {% for book in books %}
                 <tr>
-                  <td>{{loop.index}}</td>
-                  <td>{{cmp.name}}</td>
-                  <td><a href="/author/info?author_id={{cmp.author[0].id}}">{{cmp.author[0].surname}} {{cmp.author[0].name}}</a></td>
-                  <td>{% if cmp.translator[0] is defined %}{{cmp.translator[0].surname}} {{cmp.translator[0].name}}{% endif %}</td>
-                  <td><a href="/genre/info?genre_id={{cmp.genre[0].id}}">{{cmp.genre[0].name}}</a></td>
+                    <td>{{loop.index}}
+                    <td><a href="/book/info?book_id={{book.id}}">{{book.name}}</a></td>
+                    <td></td>
                 </tr>
                 {% endfor %}
+
               </table>
             </div>
           </div>

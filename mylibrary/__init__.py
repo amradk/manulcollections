@@ -2,18 +2,34 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-from mylibrary import settings
+import mylibrary.settings
 
-app = Flask(__name__, template_folder='template') # create the application instance :)
-app.config['SECRET_KEY']='HNdou238cxa03bHGAr'
+db = SQLAlchemy()
+migrate = Migrate()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://"+settings.db['username']+':'+\
-                        settings.db['password'] + '@' + settings.db['host'] +\
-                        ':' + str(settings.db['port']) + '/' + settings.db['database'] +\
-                        '?charset=' + settings.db['charset']
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
+def create_app():
+    app =  Flask(__name__, template_folder='template') # create the application instance :)
+    app.config['SECRET_KEY'] = 'HNdou238cxa03bHGAr'
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+    app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://" + settings.db['username'] + ':' + \
+                                            settings.db['password'] + '@' + settings.db['host'] + \
+                                            ':' + str(settings.db['port']) + '/' + settings.db['database'] + \
+                                            '?charset=' + settings.db['charset']
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
 
-from mylibrary import routes, models
+    from . import root
+    from . import book
+    from . import author
+    from . import genre
+
+    app.register_blueprint(root.bp)
+    app.register_blueprint(book.bp)
+    app.register_blueprint(author.bp)
+    app.register_blueprint(genre.bp)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    return app
+
+from mylibrary import models

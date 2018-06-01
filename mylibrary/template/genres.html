@@ -50,17 +50,16 @@
               <table class="table table-bordered">
                 <tr>
                   <td>№</td>
-                  <td>ФИО</td>
-                  <td>Ред.</td>
+                  <td>Название</td>
                 </tr>
-                {% for author in list %}
+                {% for genre in list %}
                 <tr>
                   <td>{{loop.index}}</td>
                   <td>
-                    <a href="/author/info?author_id={{author.id}}">{{author.surname}} {{author.name}}</a>
+                    <a href="/genre/info?genre_id={{genre.id}}">{{genre.name}}</a>
                   </td>
                   <td>
-                    <a class="btn btn-default glyphicon glyphicon-edit" role="button" href="/author/edit?author_id={{author.id}}"></a>
+                    <a class="btn btn-default glyphicon glyphicon-edit" role="button" href="/genre/edit?genre_id={{genre.id}}"></a>
                   </td>
                 </tr>
                 {% endfor %}
@@ -69,26 +68,6 @@
             </div>
 
           </div>
-
-          <!-- Modal -->
-          <div class="modal fade" id="DelConfirmation" tabindex="-1" role="dialog" aria-labelledby="DelConfirmLabel">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title" id="DelConfirmLabel">Подтверждение удаления</h4>
-                </div>
-                <div class="modal-body" id="modal_confirm">
-                  Вы уверены что хотите удалить книгу: ?
-                </div>
-                <div class="modal-footer">
-                  <a id="modal_del_btn_yes" class="btn btn-default" role="button">Да</a>
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
 
       </div>
 
