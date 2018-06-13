@@ -49,7 +49,7 @@ $(document).ready(function() {
 </script>
 
 <!-- script to add more input fields -->
-<script>
+<script type="text/javascript">
 $(document).ready(function() {
 
     var  bookIndex = 0;
@@ -80,6 +80,32 @@ $(document).ready(function() {
             // Remove element containing the fields
             $row.remove();
         });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+ $( "#pname" ).autocomplete({
+      source: "http://127.0.0.1:5000/api/publishers?plain=true",
+      minLength: 2,
+      select: function (event, ui) {
+        $.ajax({
+          url: "http://127.0.0.1:5000/api/publisher/" + ui.item.value,
+          success: function (json) {
+            //ДК, сначала очистим
+            $("#pcity").val("").prop('disabled', false);
+            $("#purl").val("").prop('disabled', false);
+            //ДК, теперь подставим значения
+            if (json['pcity'] != "") {
+                $("#pcity").val(json['pcity']).prop('disabled', true);
+            }
+            if (json['purl'] != "") {
+                $("#purl").val(json['purl']).prop('disabled', true);
+            };
+          }
+        });
+      }
+  } );
 });
 </script>
 

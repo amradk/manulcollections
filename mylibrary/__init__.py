@@ -21,11 +21,13 @@ def create_app():
     from . import book
     from . import author
     from . import genre
+    from . import api
 
     app.register_blueprint(root.bp)
     app.register_blueprint(book.bp)
     app.register_blueprint(author.bp)
     app.register_blueprint(genre.bp)
+    app.register_blueprint(api.bp)
 
     db.init_app(app)
     migrate.init_app(app, db)

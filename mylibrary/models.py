@@ -63,7 +63,7 @@ class Serie(db.Model):
 class Publisher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80, collation='utf8_general_ci'), unique=True, nullable=False)
-    url = db.Column(db.String(120, collation='utf8_general_ci'), unique=True, nullable=True)
+    url = db.Column(db.String(120, collation='utf8_general_ci'), unique=False, nullable=True)
     city = db.Column(db.String(120, collation='utf8_general_ci'), unique=False, nullable=True)
 
     def __init__(self, name, url, city):
