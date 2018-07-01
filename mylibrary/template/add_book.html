@@ -106,6 +106,16 @@ $(document).ready(function() {
         });
       }
   } );
+
+  $(".author").autocomplete({
+    source: "http://127.0.0.1:5000/api/authors?plain=true",
+    minLength: 2
+  });
+
+  $(.cgenre).autocomplete ({
+    source: "http://127.0.0.1:5000/api/genres?plain=true",
+    minLength: 2
+  });
 });
 </script>
 
@@ -218,7 +228,7 @@ $(document).ready(function() {
                       <div class="form-group">
                         <label class="col-lg-2 control-label" for="aname">Автор Ф.И.О </label>
                         <div class="col-lg-6">
-                          <input type="text" placeholder="Анджей сапковский" name="cmp[0].aname" class="form-control" autocomplete="off">
+                          <input type="text" placeholder="Анджей сапковский" name="cmp[0].aname" class="form-control author" autocomplete="off">
                         </div>
                       </div>
 
@@ -239,7 +249,7 @@ $(document).ready(function() {
                       <div class="form-group">
                         <label class="col-lg-2 control-label" for="cgenre">Жанр </label>
                         <div class="col-lg-6">
-                          <input type="text" placeholder="Фэнтази" name="cmp[0].cgenre" class="form-control" autocomplete="off">
+                          <input type="text" placeholder="Фэнтази" name="cmp[0].cgenre" class="form-control cgenre" autocomplete="off">
                         </div>
                       </div>
 
@@ -252,7 +262,7 @@ $(document).ready(function() {
                       <div class="form-group">
                         <label class="col-lg-2 control-label" for="aname">Автор Ф.И.О </label>
                         <div class="col-lg-6">
-                          <input disabled="disabled" type="text" placeholder="Анджей сапковский" name="aname" class="form-control" autocomplete="off">
+                          <input disabled="disabled" type="text" placeholder="Анджей сапковский" name="aname" class="form-control author" autocomplete="off">
                         </div>
                       </div>
 

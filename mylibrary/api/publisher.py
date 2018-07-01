@@ -38,7 +38,7 @@ def api_get_publishers():
     #ДК, для jQueryUI нужно возвражать просто список значений
     #за это отвечает параметр plain
     plain = request.args.get('plain')
-    if plain and (plain == 'true' or plain == 1):
+    if plain and (plain == 'true' or plain == "1"):
         for p in publishers:
             pub_json.append(p.name)
     else:
