@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint
+from flask import Blueprint, url_for
 from flask import request, redirect, render_template
 from . import db
 from mylibrary.models import Book, Author, Translator, Serie, Publisher, Genre, Editor, Composition
@@ -8,24 +8,40 @@ from sqlalchemy import and_
 
 bp = Blueprint('book', __name__, template_folder='template', url_prefix='/book')
 
-@bp.route('/', methods=['GET'])
-def books_path():
-        books = Book.query.all()
-        return render_template('books.html',list=books)
+@bp.route('/', methods=['GET', 'POST'])
+def books_path(page=1):
+    page = request.args.get('page', 1, type=int)
+    books = Book.query.paginate(page, 5, False)
+    next_url = url_for('book.books_path', page=books.next_num) if books.has_next else None
+    prev_url = url_for('book.books_path', page=books.prev_num) if books.has_prev else None
+    return render_template('books.html',list=books, next_url=next_url,
+                           prev_url=prev_url, page=page)
 
 @bp.route('/add', methods=['GET', 'POST'])
 def add_books_path():
-    if request.method == 'POST':
 
-        book = Book(request.form.get('bname'), request.form.get('bisbn'), request.form.get('byear'))
+    if request.method == 'POST':
+        bname = request.form.get('bname')
+        bisbn = request.form.get('bisbn')
+        byear = request.form.get('byear')
+
+        #DK у книги должно быть имя, пока нет валидации форм
+        #будем отсекать довольно жестоко
+        if bname == "":
+            return redirect("/books")
+
+        book = Book(bname, bisbn, byear)
         book.volume = request.form.get('bvol')
-        editor_name = request.form.get('beditor').split()
-        editor = Editor.query.filter(and_(Editor.surname==editor_name[0], Editor.name==editor_name[1])).first()
-        #DK, check if editor in DB
-        if editor is None:
-            editor = Editor(editor_name[1], editor_name[0])
-            db.session.add(editor)
-        book.editor.append(editor)
+        editor_name = request.form.get('beditor')
+        if editor_name != "":
+            editor_name = editor_name.split()
+            # DK, check if editor in DB
+            editor = Editor.query.filter(and_(Editor.surname == editor_name[0], Editor.name == editor_name[1])).first()
+            if editor is None:
+                editor = Editor(editor_name[1], editor_name[0])
+                db.session.add(editor)
+            book.editor.append(editor)
+
         publisher = Publisher.query.filter(Publisher.name == request.form.get('pname')).first()
         if publisher is None:
             publisher = Publisher(request.form.get('pname'), request.form.get('purl'), request.form.get('pcity'))
