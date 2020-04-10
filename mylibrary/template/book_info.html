@@ -29,7 +29,7 @@
                 <p>Название: {{book.name}}</p>
                 <p>ISBN: {{book.isbn}}</p>
                 <p>Год издания: {{book.year}}</p>
-                {% if book.editor is defined %}
+                {% if book.editor is callable %}
                 <p>Редактор: {{book.editor[0].surname}} {{book.editor[0].name}}</p>
                 {% else %}
                 <p>Редактор: "" ""</p>
