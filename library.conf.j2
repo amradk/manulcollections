@@ -1,0 +1,8 @@
+[program:library]
+command={{ user_home }}/library/start.sh
+directory={{ user_home }}/library/
+user={{ user_name }}
+autostart=true
+autorestart=true
+stdout_logfile={{ user_home }}/library/logs/library.stdout
+stderr_logfile={{ user_home }}/library/logs/library.stderr

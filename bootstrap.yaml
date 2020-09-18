@@ -2,42 +2,97 @@
 - hosts: all
   gather_facts: yes
   become: yes
+  become_user: root
+  vars:
+    user_name: 'librarian'
+    user_home: '/var/lib/librarian'
+    git_url: 'https://github.com/amradk/manulcollections.git'
+    mysql_user: 'librarian'
+    mysql_root_pass: 'LibPassH863'
 
   tasks:
     - name: Create librarian user
       user:
-        name: librarian
+        name: "{{ user_name }}"
         shell: /bin/bash
-        home: /var/lib/librarian
+        home: "{{ user_home }}"
 
     - name: Clone manulcollection repo
+      become_user: "{{ user_name }}"
       git:
-        repo: https://github.com/amradk/manulcollections.git
-        dest: /var/lib/librarian/library/
+        repo: "{{ git_url }}"
+        dest: "{{ user_home }}/library/"
 
-    - name: Install Python
-      apt: 
-        name: python3
-        state: present
+    - name: Update APT cache
+      apt:
         update_cache: yes
 
-    - name: Install Python Pip
+    - name: Install python packages
+      apt:
+        pkg:
+          - python2.7
+          - python3
+          - python-pip
+          - python3-pip
+
+    - name: Install supervisor
       apt: 
         name: python3-pip
         state: present
         update_cache: no
 
-  roles:
-    - role: geerlingguy.mysql
+    - name: Install PyMySQL pip3
+      pip:
+        name: PyMySQL
+        executable: /usr/bin/pip3
+
+    - name: Install PyMySQL
+      pip:
+        name: PyMySQL
+    
+    - name: Install Mysql
+      include_role: 
+        name: geerlingguy.mysql
       vars:
         mysql_user_name: root
-        mysql_user_password: root
+        mysql_user_password: "{{ mysql_root_pass }}"
         mysql_enabled_on_startup: true
         mysql_packages:
           - mysql-server-5.7
           - mysql-client
-    - role: cchurch.virtualenv
+
+    - name: Create Python Venv
+      include_role: 
+        name: cchurch.virtualenv
       vars:
-        virtualenv_path: /var/lib/librarian/library/
+        virtualenv_path: "{{ user_home }}/library/"
+        virtualenv_user: "{{ user_name }}"
         virtualenv_requirements:
-          - /var/lib/librarian/library/manulcollections/requirements.txt
+          - "{{ user_home }}/library/requirements.txt"
+
+    - name: Install library supervisor conf
+      template:
+        src: ./library.conf.j2
+        dest: "/etc/supervisor/conf.d/library.conf"
+        owner: "root"
+        group: "root"
+        mode: '0644'
+
+    - name: Create a directory for logs if it does not exist
+      file:
+        path: "{{ user_home }}/library/logs"
+        state: directory
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: '0755'
+
+    - name: Install supervisord
+      apt:
+        name: supervisor
+        state: present
+
+    - name: 
+      supervisorctl:
+        name: library
+        state: started
+        config: "/etc/supervisor/conf.d/library.conf"
