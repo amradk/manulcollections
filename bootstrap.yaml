@@ -34,6 +34,7 @@
           - python3
           - python-pip
           - python3-pip
+          - supervisor
 
     - name: Install supervisor
       apt: 
@@ -70,14 +71,6 @@
         virtualenv_requirements:
           - "{{ user_home }}/library/requirements.txt"
 
-    - name: Install library supervisor conf
-      template:
-        src: ./library.conf.j2
-        dest: "/etc/supervisor/conf.d/library.conf"
-        owner: "root"
-        group: "root"
-        mode: '0644'
-
     - name: Create a directory for logs if it does not exist
       file:
         path: "{{ user_home }}/library/logs"
@@ -86,12 +79,21 @@
         group: "{{ user_name }}"
         mode: '0755'
 
-    - name: Install supervisord
-      apt:
-        name: supervisor
-        state: present
+    - name: Install library supervisor conf
+      template:
+        src: ./library.conf.j2
+        dest: "/etc/supervisor/conf.d/library.conf"
+        owner: "root"
+        group: "root"
+        mode: '0644'
 
-    - name: 
+    - name: Add library config to supervisor
+      supervisorctl:
+        name: library
+        state: present
+        config: "/etc/supervisor/conf.d/library.conf"
+
+    - name: Start library via supervisorctl
       supervisorctl:
         name: library
         state: started

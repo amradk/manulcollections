@@ -6,3 +6,6 @@ autostart=true
 autorestart=true
 stdout_logfile={{ user_home }}/library/logs/library.stdout
 stderr_logfile={{ user_home }}/library/logs/library.stderr
+
+[supervisorctl]
+serverurl=unix:///var/run/supervisor.sock 
