@@ -98,3 +98,158 @@
         name: library
         state: started
         config: "/etc/supervisor/conf.d/library.conf"
+
+    - name: Install nginx
+      include_role: 
+        name: nginxinc.nginx
+      vars:
+        nginx_debug_output: false
+        nginx_selinux: true
+        nginx_selinux_tcp_ports:
+          - 80
+          - 443
+        nginx_version: "=1.14.0-0ubuntu1.7"
+        nginx_configure: false
+        nginx_logrotate_conf_enable: true
+        nginx_logrotate_conf:
+          paths:
+            - /var/log/nginx/*.log
+          options:
+            - daily
+            - missingok
+            - rotate 14
+            - compress
+            - delaycompress
+            - notifempty
+            - sharedscripts
+
+    - name: Configure nginx
+      include_role: 
+        name: nginxinc.nginx_config
+      vars:
+        nginx_config_http_template_enable: true
+        nginx_config_cleanup_paths: '/etc/nginx/sites-enabled/'
+        nginx_config_main_template:
+          user: 'root'
+        http_settings:
+            default_type: application/octet-stream
+            access_log_format:
+              - name: main
+                format: |
+                  '$remote_addr - $remote_user [$time_local] "$request" '
+                  '$status $body_bytes_sent "$http_referer" '
+                  '"$http_user_agent" "$http_x_forwarded_for"'
+
+        nginx_config_http_template:
+          app:
+            template_file: http/default.conf.j2
+            conf_file_name: library.conf
+            conf_file_location: /etc/nginx/sites-enabled/
+            servers:
+              server:
+                listen:
+                  listen_localhost:
+                    ip: 0.0.0.0
+                    port: 80
+                    opts:
+                      - default_server
+                  listen_localhost_https:
+                    ip: 0.0.0.0
+                    port: 443
+                    ssl: false
+                    opts:
+                      - default_server
+                server_name: localhost
+                http_error_pages:
+                  404: /404.html
+                error_page: /usr/share/nginx/html
+                # access_log:
+                #   - name: main
+                #     location: /var/log/nginx/library_access.log
+                client_max_body_size: 512k
+            # custom_options: []
+                reverse_proxy:
+                  locations:
+                    frontend:
+                      location: /
+                      rewrites:
+                        - (.*).html(.*) $1$2
+                      proxy_pass: http://library_backend/
+                      proxy_temp_path:
+                        path: /var/cache/nginx/proxy/library/temp
+                      proxy_cache_lock: false
+                      proxy_cache_min_uses: 3
+                      proxy_cache_revalidate: false
+                      proxy_cache_use_stale:
+                        - http_403
+                        - http_404
+                      proxy_ignore_headers:
+                        - Vary
+                        - Cache-Control
+                      proxy_redirect: false
+                      proxy_set_header:
+                        header_host:
+                          name: Host
+                          value: $host
+                        header_x_real_ip:
+                          name: X-Real-IP
+                          value: $remote_addr
+                        header_x_forwarded_for:
+                          name: X-Forwarded-For
+                          value: $proxy_add_x_forwarded_for
+                        header_x_forwarded_proto:
+                          name: X-Forwarded-Proto
+                          value: $scheme
+                      proxy_buffering: false
+                      client_max_body_size: 5m
+                      sub_filter:
+                        # sub_filters: []
+                        last_modified: "off"
+                        once: "on"
+                        # types: "text/html"
+                returns:
+                  return301:
+                    location: ^~ /old-path
+                    code: 301
+                    value: http://$host/new-path
+            # proxy_cache:
+            #   proxy_cache_path:
+            #     - path: /var/cache/nginx/proxy/library
+            #       keys_zone:
+            #         name: library_proxy_cache
+            #         size: 5m
+            #       levels: "1:2"
+            #       max_size: 5g
+            #       inactive: 30m
+            #       use_temp_path: true
+            #     - path: /var/cache/nginx/proxy/library
+            #       keys_zone:
+            #         name: library_proxy_cache
+            #         size: 10m
+            #       levels: "1:2"
+            #       max_size: 10g
+            #       inactive: 60m
+            #       use_temp_path: true
+            #   proxy_temp_path:
+            #     path: /var/cache/nginx/proxy/temp
+            #   proxy_cache_lock: true
+            #   proxy_cache_min_uses: 5
+            #   proxy_cache_revalidate: true
+            #   proxy_cache_use_stale:
+            #     - error
+            #     - timeout
+            #   proxy_ignore_headers:
+            #     - Expires
+            upstreams:
+              library_upstream:
+                name: library_backend
+                lb_method: least_conn
+                zone_name: library_mem_zone
+                zone_size: 64k
+                sticky_cookie: false
+                servers:
+                  frontend_server_1:
+                    address: 127.0.0.1
+                    port: 5060
+                    weight: 1
+                    health_check: max_fails=3 fail_timeout=5s
