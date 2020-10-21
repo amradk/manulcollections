@@ -1,0 +1,30 @@
+---
+version: "3.8"
+services:
+  library:
+    build: .
+    ports:
+      - "5060:5060"
+    environment:
+      DB_HOST: db
+      DB_USER: librarian
+      DB_PORT: 3306
+      DB_PASS: 'L1bR@rianPass'
+      DB_NAME: 'librarydb'
+    depends_on:
+      - db
+
+  db:
+    image: "mysql:5.7"
+    environment:
+      MYSQL_ROOT_PASSWORD: "Str0ngP@ss"
+      MYSQL_DATABASE: "librarydb"
+      MYSQL_USER: "librarian"
+      MYSQL_PASSWORD: "L1bR@rianPass"
+    expose:
+      - "3306"
+    volumes:
+      - "dbdata:/var/lib/mysql/"
+
+volumes:
+  dbdata:
