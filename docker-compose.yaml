@@ -1,5 +1,5 @@
 ---
-version: "3.8"
+version: "2.2"
 services:
   library:
     build: .
@@ -13,6 +13,17 @@ services:
       DB_NAME: 'librarydb'
     depends_on:
       - db
+
+  #Nginx Service
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d/
 
   db:
     image: "mysql:5.7"
